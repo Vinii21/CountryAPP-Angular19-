@@ -1,5 +1,5 @@
 <section class="mt-5">
-  <table class="tables table-md mt-2 w-full">
+  <table class="table table-md mt-2 w-full">
     <thead>
       <tr>
         <th>#</th>
@@ -12,8 +12,25 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
+      @for (country of countries(); track country.code; let index = $index) {
+        <tr>
+        <td>{{index + 1}}</td>
+        <td>{{country.icon}}</td>
+        <td>
+          <img [src]="country.flag" [alt]="country.officialName" class="w-10">
+        </td>
+        <td>{{country.name}}</td>
+        <td>{{country.capital}}</td>
+        <td>{{country.population}}</td>
+        <td>
+          <a class="link-secondary">Más información</a>
+        </td>
       </tr>
+      } @empty {
+        <div class="w-full flex justify-center absolute p-5">
+          <p>No hay resultados de búsqueda</p>
+        </div>
+      }
     </tbody>
   </table>
 </section>
