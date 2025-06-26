@@ -8,7 +8,7 @@ export class countryMapper {
       code: countrie.idd.root + countrie.idd.suffixes[0],
       icon: countrie.flag,
       flag: countrie.flags.svg,
-      name: countrie.name.common,
+      name: countrie.translations['spa'].common ?? 'No Spanish Name',
       officialName: countrie.name.official,
       capital: countrie.capital[0],
       population: countrie.population
