@@ -24,9 +24,17 @@ export default class ByCapitalPageComponent {
     this.isError.set(null);
 
     this.countryService.searchByCapita(value)
-    .subscribe((countries)=>{
+    .subscribe({
+      next: (countries)=>{
         this.isLoading.set(false);
         this.countries.set(countries);
-      })
+      },
+      error: (err) => {
+        //console.log(err)
+        this.isLoading.set(false);
+        this.isError.set(err);
+        this.countries.set([]);
+      }
+    })
   };
 }

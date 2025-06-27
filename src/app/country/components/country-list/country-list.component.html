@@ -28,7 +28,11 @@
       </tr>
       } @empty {
         <div class="w-full flex justify-center absolute p-5">
-          <p>No hay resultados de búsqueda</p>
+          @if(countryService.stateError() !== '' ) {
+            <p>{{countryService.stateError()}}</p>
+          } @else {
+            <p>No hay resultados de búsqueda</p>
+          }
         </div>
       }
     </tbody>

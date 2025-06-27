@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { RESTCountry } from '../interfaces/RESTCountry.interfaces';
-import { map, Observable } from 'rxjs';
+import { catchError, map, Observable, throwError } from 'rxjs';
 import { Country } from '../interfaces/country.interface';
 import { countryMapper } from '../mappers/country.mapper';
 
@@ -14,12 +14,27 @@ export class CountryService {
 
   private http = inject(HttpClient);
 
+  stateError = signal<string>('');
+
   searchByCapita(query: string): Observable<Country[]> {
     query = query.toLowerCase();
 
     return this.http.get<RESTCountry[]>(`${API_URL}/capital/${query}`)
     .pipe(
-      map(restCountries => countryMapper.mapCountriesToCountriesArray(restCountries))
+      map(restCountries => {
+        this.stateError.set('');
+        return countryMapper.mapCountriesToCountriesArray(restCountries)}),
+      catchError( err => {
+        if(query === '') {
+          this.stateError.set('');
+          console.log('Input de texto vacio.', err)
+          return throwError(()=>new Error('Input de texto vacio.'))
+        }
+        const errorMessage = `No se pudo encontrar países con ese query: ${query}`;
+        this.stateError.set(errorMessage);
+        console.log(`Error fetchin`, err);
+        return throwError(()=>new Error(errorMessage))
+      })
     )
   }
 }
