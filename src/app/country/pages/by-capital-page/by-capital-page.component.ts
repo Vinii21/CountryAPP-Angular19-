@@ -1,8 +1,9 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, resource, signal } from '@angular/core';
 import { CountrySearchInputComponent } from "../../components/country-search-input/country-search-input.component";
 import { CountryListComponent } from "../../components/country-list/country-list.component";
 import { CountryService } from '../../services/country.service';
 import { Country } from '../../interfaces/country.interface';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'by-capital-page',
@@ -12,7 +13,28 @@ import { Country } from '../../interfaces/country.interface';
 export default class ByCapitalPageComponent {
 
   countryService = inject(CountryService);
-  isLoading = signal<boolean>(false);
+  query = signal('')
+
+  countryResourses = resource({
+    request: () => ({query: this.query()}),
+    loader: async({request}) =>{
+      try {
+        if( !request.query ) {
+          this.countryService.stateError.set('');
+          return []
+        };
+        return await firstValueFrom(
+        this.countryService.searchByCapita(request.query)
+      )
+      } catch (error) {
+        // Acá podemos ejecutar acciones cuando hay un error
+        // Ese mensaje que sale en ese error, lo definimos en el servicio
+        return []
+      }
+    }
+  });
+
+ /*  isLoading = signal<boolean>(false);
   isError = signal<string | null>(null);
   countries = signal<Country[]>([]);
 
@@ -36,5 +58,5 @@ export default class ByCapitalPageComponent {
         this.countries.set([]);
       }
     })
-  };
+  }; */
 }

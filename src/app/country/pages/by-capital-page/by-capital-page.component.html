@@ -1,2 +1,4 @@
-<country-search-input [placeholder]="'Buscar por Capital'" (txtValueEmitter)="onSearchFromSon($event)"/>
-<country-list [countries]="countries()"/>
+<country-search-input
+[placeholder]="'Buscar por Capital'"
+(txtValueEmitter)="query.set($event)"/>
+<country-list [countries]="countryResourses.value()!"/>

@@ -25,11 +25,6 @@ export class CountryService {
         this.stateError.set('');
         return countryMapper.mapCountriesToCountriesArray(restCountries)}),
       catchError( err => {
-        if(query === '') {
-          this.stateError.set('');
-          console.log('Input de texto vacio.', err)
-          return throwError(()=>new Error('Input de texto vacio.'))
-        }
         const errorMessage = `No se pudo encontrar países con ese query: ${query}`;
         this.stateError.set(errorMessage);
         console.log(`Error fetchin`, err);
