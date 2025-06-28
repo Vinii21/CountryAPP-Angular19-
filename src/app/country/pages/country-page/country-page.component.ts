@@ -1,8 +1,9 @@
 import { Component, inject, resource, signal } from '@angular/core';
 import { CountrySearchInputComponent } from "../../components/country-search-input/country-search-input.component";
 import { CountryListComponent } from "../../components/country-list/country-list.component";
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, of } from 'rxjs';
 import { CountryService } from '../../services/country.service';
+import { rxResource } from '@angular/core/rxjs-interop'
 
 @Component({
   selector: 'country-page',
@@ -14,16 +15,14 @@ export default class CountryPageComponent {
   countryService = inject(CountryService);
   query = signal<string>('');
 
-  countryResource = resource({
+  countryResource = rxResource({
     request: ()=>({query: this.query()}),
-    loader: async ({request}) => {
+    loader: ({request}) => {
       if(!request.query) {
         this.countryService.stateError.set('')
-        return []
+        return of([])
       }
-      return await firstValueFrom(
-        this.countryService.searchByCountry(request.query)
-      )
+      return this.countryService.searchByCountry(request.query)
     }
   });
 }
