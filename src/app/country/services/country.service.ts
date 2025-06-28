@@ -31,5 +31,22 @@ export class CountryService {
         return throwError(()=>new Error(errorMessage))
       })
     )
+  };
+
+  searchByCountry(query: string): Observable<Country[]> {
+    query = query.toLowerCase();
+
+    return this.http.get<RESTCountry[]>(`${API_URL}/name/${query}`)
+    .pipe(
+      map(restCountries => {
+        this.stateError.set('');
+        return countryMapper.mapCountriesToCountriesArray(restCountries)}),
+      catchError( err => {
+        const errorMessage = `No se pudo encontrar países con ese query: ${query}`;
+        this.stateError.set(errorMessage);
+        console.log(`Error fetchin`, err);
+        return throwError(()=>new Error(errorMessage))
+      })
+    )
   }
 }

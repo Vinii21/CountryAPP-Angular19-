@@ -1,2 +1,2 @@
-<country-search-input [placeholder]="'Buscar por País'" (txtValueEmitter)="onValue($event)" />
-<country-list [countries]="[]"/>
+<country-search-input [placeholder]="'Buscar por País'" (txtValueEmitter)="this.query.set($event)" />
+<country-list [countries]="this.countryResource.value()!"/>

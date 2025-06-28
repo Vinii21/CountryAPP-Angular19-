@@ -18,19 +18,13 @@ export default class ByCapitalPageComponent {
   countryResourses = resource({
     request: () => ({query: this.query()}),
     loader: async({request}) =>{
-      try {
-        if( !request.query ) {
+      if( !request.query ) {
           this.countryService.stateError.set('');
           return []
         };
         return await firstValueFrom(
         this.countryService.searchByCapita(request.query)
       )
-      } catch (error) {
-        // Acá podemos ejecutar acciones cuando hay un error
-        // Ese mensaje que sale en ese error, lo definimos en el servicio
-        return []
-      }
     }
   });
 
