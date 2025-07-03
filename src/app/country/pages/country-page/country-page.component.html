@@ -1,2 +1,7 @@
 <country-search-input [placeholder]="'Buscar por País'" (txtValueEmitter)="this.query.set($event)" />
-<country-list [countries]="this.countryResource.value()!"/>
+<country-list
+  [countries]="this.countryResource.value() ?? []"
+  [errorMessage]="this.countryResource.error()"
+  [isLoading]="this.countryResource.isLoading()"
+  [isEmpty]="this.countryResource.value()?.length === 0"
+  />

@@ -11,4 +11,8 @@ import { CountryService } from '../../services/country.service';
 export class CountryListComponent {
   public countryService = inject(CountryService);
   countries = input.required<Country[]>();
+
+  errorMessage = input<string|unknown|undefined>();
+  isLoading = input<boolean>(false);
+  isEmpty = input<boolean>(false);
 }

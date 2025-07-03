@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { RESTCountry } from '../interfaces/RESTCountry.interfaces';
-import { catchError, map, Observable, throwError } from 'rxjs';
+import { catchError, delay, map, Observable, throwError } from 'rxjs';
 import { Country } from '../interfaces/country.interface';
 import { countryMapper } from '../mappers/country.mapper';
 
@@ -41,6 +41,7 @@ export class CountryService {
       map(restCountries => {
         this.stateError.set('');
         return countryMapper.mapCountriesToCountriesArray(restCountries)}),
+      delay(3000),
       catchError( err => {
         const errorMessage = `No se pudo encontrar países con ese query: ${query}`;
         this.stateError.set(errorMessage);
