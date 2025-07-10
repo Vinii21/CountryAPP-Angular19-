@@ -23,7 +23,7 @@
         <td>{{country.capital}}</td>
         <td>{{country.population | number}}</td>
         <td>
-          <a class="link-secondary">Más información</a>
+          <a [routerLink]="['/country/by', country.code]" class="link-secondary">Más información</a>
         </td>
       </tr>
       }

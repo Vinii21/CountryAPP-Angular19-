@@ -5,7 +5,7 @@ export class countryMapper {
 
   static RESTcountriesToCountries (countrie: RESTCountry): Country {
     return {
-      code: countrie.idd.root + countrie.idd.suffixes[0],
+      code: countrie.cca2,
       icon: countrie.flag,
       flag: countrie.flags.svg,
       name: countrie.translations['spa'].common ?? 'No Spanish Name',

@@ -1,10 +1,26 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { rxResource } from '@angular/core/rxjs-interop';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { CountryService } from '../../services/country.service';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'detail-country-page',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './detail-country-page.component.html',
 })
 export default class DetailCountryPageComponent {
+
+  private countryCode = inject(ActivatedRoute).snapshot.params['code'];
+  countryService = inject(CountryService);
+
+  detailCountryrResouce = rxResource({
+    request: () => ({code: this.countryCode}),
+    loader: ({request}) => {
+      if(!request.code) return of();
+
+      return this.countryService.searchCountryByCode(request.code);
+    }
+  });
 
 }

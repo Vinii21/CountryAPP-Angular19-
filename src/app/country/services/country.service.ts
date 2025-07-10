@@ -50,4 +50,21 @@ export class CountryService {
       })
     )
   }
+
+  searchCountryByCode(code: string) {
+
+    return this.http.get<RESTCountry[]>(`${API_URL}/alpha/${code}`)
+    .pipe(
+      map(restCountries => {
+        this.stateError.set('');
+        return countryMapper.mapCountriesToCountriesArray(restCountries)}),
+      map(countries => countries.at(0)),
+      catchError( err => {
+        const errorMessage = `No se pudo encontrar países con ese código: ${code}`;
+        this.stateError.set(errorMessage);
+        console.log(`Error fetchin`, err);
+        return throwError(()=>new Error(errorMessage))
+      })
+    )
+  }
 }
