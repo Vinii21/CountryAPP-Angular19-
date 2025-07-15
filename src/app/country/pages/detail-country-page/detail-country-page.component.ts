@@ -1,12 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { CountryService } from '../../services/country.service';
 import { of } from 'rxjs';
+import { NotFoundComponent } from '../../components/not-found/not-found.component';
 
 @Component({
   selector: 'detail-country-page',
-  imports: [RouterLink],
+  imports: [NotFoundComponent],
   templateUrl: './detail-country-page.component.html',
 })
 export default class DetailCountryPageComponent {
